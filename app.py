@@ -5,7 +5,7 @@ from preprocessing import preprocess_ward_data
 from prediction import process_single_ward, plot_forecast
 
 # Page configuration
-st.config.set_page_config(
+st.set_page_config(
     page_title="Horizon Health Forecasting",
     layout="wide",
     initial_sidebar_state="expanded",
