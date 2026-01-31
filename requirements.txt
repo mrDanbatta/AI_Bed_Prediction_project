@@ -8,3 +8,4 @@ statsmodels
 dotenv
 psycopg2-binary
 streamlit
+APScheduler

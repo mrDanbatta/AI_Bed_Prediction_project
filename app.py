@@ -1,8 +1,16 @@
 import streamlit as st
 import pandas as pd
+from scheduler import start_scheduler
+import atexit
 from database import get_hospital_names, get_wards, check_data
 from preprocessing import preprocess_ward_data
 from prediction import process_single_ward, plot_forecast
+
+# Start the scheduler when the app initializes
+start_scheduler()
+
+# Ensure scheduler stops when app closes
+atexit.register(lambda: __import__('scheduler').stop_scheduler())
 
 # Page configuration
 st.set_page_config(
@@ -63,6 +71,13 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("**Selected Options:**")
 st.sidebar.write(f"**Hospital:** {selected_hospital}")
 st.sidebar.write(f"**Ward:** {selected_ward}")
+
+if st.sidebar.button("🔄 Force Update Now"):
+    with st.spinner("Updating data and retraining models..."):
+        from scheduler import update_ward_data_and_model
+        update_ward_data_and_model(selected_hospital, selected_ward)
+        st.sidebar.success("✅ Update completed!")
+
 
 # Main content area
 st.markdown("## 📈 Data Overview")
